@@ -1,6 +1,6 @@
 import java.util.*;
 
-class person {
+abstract class person {
     private String name;
     private String email;
     private String Roll_No;
@@ -28,6 +28,7 @@ class person {
     public void setRoll_No(String roll_No) {
         Roll_No = roll_No;
     }
+    abstract void displayDetails();
 }
 
 class Student extends person {
@@ -45,6 +46,16 @@ class Student extends person {
         this.cgpaList.add(cgpa);
         this.cgpa = cgpa;
     }
+    public List<Double> getCgpaList() {
+        return cgpaList;
+    }
+    @Override
+    void displayDetails() {
+        System.out.println("Student Name: " + getName());
+        System.out.println("Email: " + getEmail());
+        System.out.println("Roll No: " + getRoll_No());
+        System.out.println("CGPA: " + getCgpa());
+    }
 }
 
 class Professor extends person {
@@ -58,6 +69,13 @@ class Professor extends person {
     }
     public void setDepartment(Department department) {
         this.department = department;
+    }
+    @Override
+    void displayDetails() {
+        System.out.println("Professor Name: " + getName());
+        System.out.println("Email: " + getEmail());
+        System.out.println("Roll No: " + getRoll_No());
+        System.out.println("Department: " + department.getDepartmentName());
     }
 }
 
