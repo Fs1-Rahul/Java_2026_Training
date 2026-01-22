@@ -5,17 +5,10 @@ public class ReadFilePractice {
         try {
             File myFile = new File("File.txt");
             Scanner fileReader = new Scanner(myFile);
-            String content = "";
-            while (fileReader.hasNextLine()) {
-                String data = fileReader.nextLine();
+
+            while (fileReader.hasNext()) {
+                String data = fileReader.next();
                 System.out.println(data);
-                content += data + "\n";
-            }
-            for(int i=0;i<content.length();i++){
-                char ch = content.charAt(i);
-                if(ch=='.'){
-                    System.out.println("Period found at index: " + i);
-                }
             }
             fileReader.close();
         } catch (Exception e) {
