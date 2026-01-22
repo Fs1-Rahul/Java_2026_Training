@@ -1,4 +1,41 @@
 import java.util.*;
+import java.io.FileWriter;
+class PreReqException extends Exception {
+    public PreReqException(String m){
+        super(m);
+    }
+}
+
+class FullCapacityException extends Exception {
+    public FullCapacityException(String m){
+        super(m);
+    }
+}
+
+class ReportGeneration {
+    private FileWriter FileForReport=null;
+    public ReportGeneration(String name){
+        try{
+        this.FileForReport=new FileWriter(name);
+        }
+        catch(Exception e){
+            System.out.println("Eception Caught : "+e.getMessage());
+        }
+    }
+    void GenerateReport(Student s){
+        if(FileForReport != null){
+            try{
+            String r="Name : " + s.getName();
+            r+="\nRoll No. : "+s.getRoll_No();
+            FileForReport.write(r);
+            FileForReport.close();
+            }
+            catch(Exception e){
+                System.out.println("Eception Caught : "+e.getMessage());
+            }
+        }
+    }
+}
 
 abstract class person {
     private String name;
@@ -100,15 +137,16 @@ class Department {
     }
 }
 
-class Courses extends Department {
+class Courses {
     private String courseName;
     private int credits;
     private String courseCode;
     private int capacity;
     private int enrolledStudents;
     private Map<String, Integer> Grading_Criteria = new HashMap<>();
-    public Courses(String departmentName, Professor headOfDepartment,String courseName, int credits, String courseCode, int capacity) {
-        super(departmentName, headOfDepartment);
+    private Department d;
+    public Courses(Department dep,String courseName, int credits, String courseCode, int capacity) {
+        this.d=dep;
         this.courseName = courseName;
         this.credits = credits;
         this.courseCode = courseCode;
@@ -142,11 +180,11 @@ class Courses extends Department {
     public int getEnrolledStudents() {
         return enrolledStudents;
     }
-    public void enrollStudent() {
+    public void enrollStudent() throws FullCapacityException {
         if (enrolledStudents < capacity) {
             enrolledStudents++;
         } else {
-            System.out.println("Course is full. Cannot enroll more students.");
+            throw new FullCapacityException("Course is full. Cannot enroll more students.");
         }
     }
     public Map<String, Integer> getGrading_Criteria() {
@@ -168,7 +206,12 @@ class Enrollment {
     public Enrollment(Student student, Courses course) {
         this.student = student;
         this.course = course;
-        this.course.enrollStudent();
+        try{
+            course.enrollStudent();
+        }
+        catch(FullCapacityException e){
+            e.getMessage();
+        }
         this.grade = -1; // -1 indicates no grade assigned yet
         this.Status = status.Not_registered;
     }
@@ -197,6 +240,8 @@ class Enrollment {
 public class Main {
     public static void main(String[] args)
     {
-
+        Student s=new Student("Rahul", "null","2022388");
+        ReportGeneration report1 = new ReportGeneration("Report1.txt");
+        report1.GenerateReport(s);
     }    
 }
