@@ -237,11 +237,90 @@ class Enrollment {
 
 }
 
+class Driver {
+    private Map<String,String> Password;
+    private List<String> StudentId;
+    private List<String> ProfessorId;
+    private Map<String,Student> StudentList;
+    private Map<String,Professor> ProfessorList;
+    private Map<String,Courses> CourseList;
+    private List<Enrollment> EnrollmentList;
+    private List<Department> DepartmentList;
+    public Driver(){
+        this.Password=new HashMap<>();
+        this.StudentId=new ArrayList<>();
+        this.ProfessorId=new ArrayList<>();
+        this.StudentList=new HashMap<>();
+        this.ProfessorList=new HashMap<>();
+        this.CourseList=new HashMap<>();
+        this.EnrollmentList=new ArrayList<>();
+        this.DepartmentList=new ArrayList<>();
+    }
+    public void addStudent(String id, String password, Student s){
+        this.StudentId.add(id);
+        this.Password.put(id,password);
+        this.StudentList.put(id,s);
+    }
+    public void addProfessor(String id, String password, Professor p){
+        this.ProfessorId.add(id);
+        this.Password.put(id,password);
+        this.ProfessorList.put(id,p);
+    }
+    public boolean authenticateUser(String id, String password){
+        if(Password.containsKey(id)){
+            return Password.get(id).equals(password);
+        }
+        return false;
+    }
+    public Student getStudentById(String id){
+        return StudentList.get(id);
+    }
+    public Professor getProfessorById(String id){
+        return ProfessorList.get(id);
+    }
+    public boolean isStudent(String id){
+        return StudentId.contains(id);
+    }
+    public boolean isProfessor(String id){
+        return ProfessorId.contains(id);
+    }
+    public void removeStudent(String id){
+        StudentId.remove(id);
+        Password.remove(id);
+        StudentList.remove(id);
+    }
+    public void removeProfessor(String id){
+        ProfessorId.remove(id);
+        Password.remove(id);
+        ProfessorList.remove(id);
+    }
+    public void addCourse(String code, Courses c){
+        CourseList.put(code,c);
+    }
+    public Courses getCourseByCode(String code){
+        return CourseList.get(code);
+    
+    }
+    public void addEnrollment(Enrollment e){
+        EnrollmentList.add(e);
+    }
+    public List<Enrollment> getEnrollmentsByStudentId(String id){
+        List<Enrollment> result = new ArrayList<>();
+        for(Enrollment e : EnrollmentList){
+            if(e.getStudent().getRoll_No().equals(id)){
+                result.add(e);
+            }
+        }
+        return result;
+    }
+    public void addDepartment(Department d){
+        DepartmentList.add(d);
+    }
+}
 public class Main {
     public static void main(String[] args)
     {
-        Student s=new Student("Rahul", "null","2022388");
-        ReportGeneration report1 = new ReportGeneration("Report1.txt");
-        report1.GenerateReport(s);
+        System.out.println("University Management System");
+        Driver dr=new Driver();
     }    
 }
