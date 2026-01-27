@@ -322,5 +322,29 @@ public class Main {
     {
         System.out.println("University Management System");
         Driver dr=new Driver();
-    }    
+        Student s1=new Student("Alice","alice@gmail.com","S101");
+        dr.addStudent("S101","password123",s1);
+        Student s2=new Student("Bob","bob@gmail.com:","S102");
+        dr.addStudent("S102","password456",s2);
+        Department d1=new Department("Computer Science",null);
+        Professor p1=new Professor("Dr. Smith","drsmith@gmail.com","P201",d1);
+        dr.addProfessor("P201","profpass",p1);
+        d1.setHeadOfDepartment(p1);
+        Courses c1=new Courses(d1,"Data Structures",4,"CS201",2);
+        c1.addGrading_Criteria("Midterm",40);
+        c1.addGrading_Criteria("Final",60);
+        dr.addCourse("CS201",c1);
+        try{
+            Enrollment e1=new Enrollment(s1,c1);
+            dr.addEnrollment(e1);
+            Enrollment e2=new Enrollment(s2,c1);
+            dr.addEnrollment(e2);
+            Enrollment e3=new Enrollment(s1,c1);
+            dr.addEnrollment(e3);
+    }    catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        ReportGeneration rg=new ReportGeneration("report.txt");
+        rg.GenerateReport(s1);
+    }
 }
